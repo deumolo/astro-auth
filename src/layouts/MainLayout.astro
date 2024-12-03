@@ -18,6 +18,8 @@ const { title = 'Astro' }: Props = Astro.props;
   </head>
   <body>
     <Navbar />
-    <slot />
+    <main class="container m-auto max-w-5xl">
+      <slot />
+    </main>
   </body>
 </html>
