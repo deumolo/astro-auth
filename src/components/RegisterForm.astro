@@ -90,6 +90,7 @@ const rememberMe = !!email;
 </div>
 
 <script>
+  import Swal from 'sweetalert2';
   import { actions } from 'astro:actions';
 
   const form = document.querySelector('form') as HTMLFormElement;
@@ -103,10 +104,17 @@ const rememberMe = !!email;
     const { data, error } = await actions.registerUser(formData);
 
     if (error) {
-      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Credenciales no son correctas',
+        text: error.message,
+      });
+      btnSubmit.removeAttribute('disabled');
       return;
     }
 
-    btnSubmit.setAttribute('disabled', 'false');
+    window.location.replace('/protected');
+
+    btnSubmit.removeAttribute('disabled');
   });
 </script>

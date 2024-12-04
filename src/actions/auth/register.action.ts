@@ -30,7 +30,6 @@ export const registerUser = defineAction({
         //Creación de usuario
         try {
             const user = await createUserWithEmailAndPassword(firebase.auth, email, password);
-            console.log("user print : ", user.user);
             return {
                 ok: true,
                 message: 'Usuario creado',
