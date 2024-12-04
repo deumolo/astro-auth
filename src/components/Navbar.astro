@@ -13,7 +13,12 @@
         <a href='/protected'>Protegido</a>
       </li>
       <li class='font-semibold text-gray-700'><a href='#'>Ingresar</a></li>
-      <li class='font-semibold text-gray-700'><a href='#'>Salir</a></li>
+      <li class='font-semibold text-gray-700'>
+        <a href='/register'>Cuenta nueva</a>
+      </li>
+      <li id='logout' class='font-semibold text-gray-700'>
+        <a href='#'>Salir</a>
+      </li>
       <li>
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -69,3 +74,14 @@
     </ul>
   </div>
 </nav>
+
+<script>
+  import { actions } from 'astro:actions';
+
+  const logoutBtn = document.getElementById('logout') as HTMLButtonElement;
+  logoutBtn.addEventListener('click', () => {
+    actions.logoutUser();
+    window.location.href = '/';
+
+  });
+</script>
