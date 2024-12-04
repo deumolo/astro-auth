@@ -1,5 +1,5 @@
-import { register } from './auth/register.action';
+import { registerUser } from './auth/register.action';
 
 export const server = {
-    register: register,
+    register: registerUser,
 }

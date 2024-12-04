@@ -100,7 +100,7 @@ const rememberMe = !!email;
     btnSubmit.setAttribute('disabled', 'true');
 
     const formData = new FormData(form);
-    const { data, error } = await actions.register(formData);
+    const { data, error } = await actions.registerUser(formData);
 
     if (error) {
       console.error(error);
