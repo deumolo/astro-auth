@@ -68,7 +68,7 @@ const rememberMe = !!email;
         <button
           type='submit'
           id='btn-submit'
-          class='w-full flex justify-center bg-green-400 hover:bg-green-500 text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500'
+          class='disabled:cursor-default disabled:bg-gray-300 w-full flex justify-center bg-green-400 text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500'
         >
           Ingresar
         </button>
@@ -98,7 +98,7 @@ const rememberMe = !!email;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    btnSubmit.setAttribute('disabled', 'true');
+    btnSubmit.setAttribute('disabled', 'disabled');
 
     const formData = new FormData(form);
     const { data, error } = await actions.registerUser(formData);
