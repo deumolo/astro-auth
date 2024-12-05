@@ -61,6 +61,20 @@ const rememberMe = !!email;
           Ingresar
         </button>
       </div>
+
+      <div class=''>
+        <hr />
+      </div>
+
+      <div>
+        <button
+          type='button'
+          id='btn-google'
+          class='w-full flex justify-center bg-red-400 hover:bg-red-500 text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500'
+        >
+          Ingresar google
+        </button>
+      </div>
     </form>
     <div class='pt-5 text-center text-gray-400 text-xs'>
       <span>
@@ -80,9 +94,12 @@ const rememberMe = !!email;
 <script>
   import Swal from 'sweetalert2';
   import { actions } from 'astro:actions';
+  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+  import { firebase } from '@/firebase/config';
 
   const form = document.querySelector('form') as HTMLFormElement;
   const btnSubmit = document.querySelector('#btn-submit') as HTMLButtonElement;
+  const btnGoogle = document.querySelector('#btn-google') as HTMLButtonElement;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -102,5 +119,37 @@ const rememberMe = !!email;
     }
 
     window.location.replace('/protected');
+  });
+
+  btnGoogle.addEventListener('click', async (e) => {
+    e.preventDefault();
+    btnGoogle.setAttribute('disabled', 'disabled');
+
+    try {
+      //Paso 1 : Verificar credenciales en cliente
+      const credentials = await signInWithPopup(
+        firebase.auth,
+        new GoogleAuthProvider()
+      );
+
+      //Paso 2 : Verificar credenciales en servidor
+      const { data, error } = await actions.loginWithGoogle(credentials);
+
+      if (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Credenciales no son correctas',
+          text: error.message,
+        });
+        btnGoogle.removeAttribute('disabled');
+        return;
+      }
+      btnGoogle.innerText = 'Ingresando...';
+      window.location.replace('/protected');
+    } catch (error) {
+      btnGoogle.removeAttribute('disabled');
+    }
+
+    btnGoogle.removeAttribute('disabled');
   });
 </script>
