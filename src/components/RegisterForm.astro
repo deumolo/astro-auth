@@ -101,7 +101,7 @@ const rememberMe = !!email;
     btnSubmit.setAttribute('disabled', 'disabled');
 
     const formData = new FormData(form);
-    const { data, error } = await actions.registerUser(formData);
+    const { error } = await actions.registerUser(formData);
 
     if (error) {
       Swal.fire({
@@ -113,8 +113,8 @@ const rememberMe = !!email;
       return;
     }
 
+    btnSubmit.removeAttribute('disabled');
     window.location.replace('/protected');
 
-    btnSubmit.removeAttribute('disabled');
   });
 </script>
