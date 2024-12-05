@@ -2,7 +2,6 @@ import { defineAction } from 'astro:actions';
 import { z } from 'astro:schema';
 import type { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
-import { error } from 'node_modules/astro/dist/core/logger/core';
 import { firebase } from 'src/firebase/config';
 
 export const registerUser = defineAction({
@@ -55,10 +54,6 @@ export const registerUser = defineAction({
 
             throw new Error('Error al crear el usuario');
         }
-
-        //Actualizar el nombre del usuario
-
-        //Verificar el correo electrónico
 
         return {
             ok: true,
