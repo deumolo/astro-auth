@@ -121,35 +121,29 @@ const rememberMe = !!email;
     window.location.replace('/protected');
   });
 
-  btnGoogle.addEventListener('click', async (e) => {
-    e.preventDefault();
+  btnGoogle.addEventListener('click', async () => {
     btnGoogle.setAttribute('disabled', 'disabled');
+    btnGoogle.innerText = 'Redireccionando...';
+
+    const provider = new GoogleAuthProvider();
 
     try {
-      //Paso 1 : Verificar credenciales en cliente
-      const credentials = await signInWithPopup(
-        firebase.auth,
-        new GoogleAuthProvider()
-      );
+      // Paso 1: Obtener las credenciales del lado del cliente
+      const credentials = await signInWithPopup(firebase.auth, provider);
 
-      //Paso 2 : Verificar credenciales en servidor
-      const { data, error } = await actions.loginWithGoogle(credentials);
+      // Paso 2: Verifcar las credenciales en el backend
+      const { error } = await actions.loginWithGoogle(credentials);
 
       if (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Credenciales no son correctas',
-          text: error.message,
-        });
+        alert(error.message);
         btnGoogle.removeAttribute('disabled');
         return;
       }
-      btnGoogle.innerText = 'Ingresando...';
+
       window.location.replace('/protected');
     } catch (error) {
+      console.log(error);
       btnGoogle.removeAttribute('disabled');
     }
-
-    btnGoogle.removeAttribute('disabled');
   });
 </script>
