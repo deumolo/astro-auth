@@ -12,9 +12,9 @@ import LoginForm from '@/components/LoginForm.astro';
 
 const { isLoggedIn, user } = Astro.locals;
 
-if (isLoggedIn || user) {
-  return Astro.redirect('/protected');
-}
+// if (isLoggedIn || user) {
+//   return Astro.redirect('/protected');
+// }
 ---
 
 <AuthLayout>
