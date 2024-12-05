@@ -8,14 +8,14 @@ if (!firebaseUser) {
   return Astro.redirect('/login');
 }
 
+await firebaseUser?.reload();
 const { email, photoURL, emailVerified } = firebaseUser;
 const name = firebaseUser.displayName || 'No display name';
-
 ---
 
 <MainLayout>
   <div
-    class='bg-gray-200 font-sans h-screen w-full flex flex-row justify-center items-center'
+    class='bg-gradient-to-b from-blue-500 to-blue-400 opacity-75 font-sans h-screen w-full flex flex-row justify-center items-center'
   >
     <div class='card w-96 mx-auto bg-white shadow-xl hover:shadow rounded-md'>
       {
