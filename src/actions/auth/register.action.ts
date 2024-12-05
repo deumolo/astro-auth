@@ -1,7 +1,7 @@
 import { defineAction } from 'astro:actions';
 import { z } from 'astro:schema';
 import type { FirebaseError } from 'firebase/app';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { error } from 'node_modules/astro/dist/core/logger/core';
 import { firebase } from 'src/firebase/config';
 
@@ -14,7 +14,7 @@ export const registerUser = defineAction({
         remember_me: z.boolean().optional(),
     }),
     handler: async ({ name, email, password, remember_me }, { cookies }) => {
-   
+
         //Creación de cookies
         if (remember_me) {
             cookies.set('email', email, {
@@ -30,6 +30,17 @@ export const registerUser = defineAction({
         //Creación de usuario
         try {
             const user = await createUserWithEmailAndPassword(firebase.auth, email, password);
+
+            //Actualizar el nombre del usuario
+            updateProfile(firebase.auth.currentUser!, {
+                displayName: name,
+            });
+
+            //Verificar el correo electrónico
+            await sendEmailVerification(firebase.auth.currentUser!, {
+                url: 'http://localhost:4321/protected?emailVerified=true',
+            })
+
             return {
                 ok: true,
                 message: 'Usuario creado',
