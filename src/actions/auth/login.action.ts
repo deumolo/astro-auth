@@ -32,7 +32,6 @@ export const loginUser = defineAction({
             //Ingreso de usuario
             try {
                 const user = await signInWithEmailAndPassword(firebase.auth, email, password);
-                console.log("user: ", user.user)
                 return user.user.providerData[0];
             } catch (error) {
                 const firebaseError = error as FirebaseError;
