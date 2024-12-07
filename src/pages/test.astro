@@ -16,27 +16,39 @@ const rememberMe = !!email;
         </button>
       </div>
     </form>
-    <div class='pt-5 text-center text-gray-400 text-xs'>
-      <span>
-        Copyright © 2021-2022
-        <a
-          href='https://codepen.io/uidesignhub'
-          rel=''
-          target='_blank'
-          title='Ajimon'
-          class='text-green hover:text-green-500'>AJI</a
-        ></span
-      >
-    </div>
   </div>
 </div>
 
 <script>
+  import { actions } from 'astro:actions';
+  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+  import { firebase } from '@/firebase/config';
+
   const btnGoogle = document.querySelector('#btn-google') as HTMLButtonElement;
 
   btnGoogle.addEventListener('click', async () => {
-    console.log('Ingresar con Google');
-    // btnGoogle.setAttribute('disabled', 'disabled');
-    // btnGoogle.innerText = 'Redireccionando...';
+    btnGoogle.setAttribute('disabled', 'disabled');
+    btnGoogle.innerText = 'Redireccionando...';
+
+    const provider = new GoogleAuthProvider();
+
+    try {
+      // Paso 1: Obtener las credenciales del lado del cliente
+      const credentials = await signInWithPopup(firebase.auth, provider);
+
+      // Paso 2: Verifcar las credenciales en el backend
+      const { error } = await actions.loginWithGoogle(credentials);
+
+      if (error) {
+        alert(error.message);
+        btnGoogle.removeAttribute('disabled');
+        return;
+      }
+
+      window.location.replace('/protected');
+    } catch (error) {
+      console.log(error);
+      btnGoogle.removeAttribute('disabled');
+    }
   });
 </script>
