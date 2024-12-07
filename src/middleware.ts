@@ -1,32 +1,34 @@
-import { defineMiddleware } from "astro:middleware";
+import type { MiddlewareNext } from 'astro';
+import { defineMiddleware } from 'astro:middleware';
 import { firebase } from './firebase/config';
 
-const privateRoutes = ["/protected"];
-const publicRoutes = ["/login", "/register"];
+const privateRoutes = ['/protected'];
+const notAuthenticatedRoutes = ['/login', '/register'];
 
-// `context` and `next` are automatically typed
-export const onRequest = defineMiddleware(({ url, request, locals, redirect }, next) => {
-    const isLoggedIn = !!firebase.auth.currentUser;
-    const user = firebase.auth.currentUser;
+export const onRequest = defineMiddleware(
+    async ({ url, request, locals, redirect }, next) => {
+        const isLoggedIn = !!firebase.auth.currentUser;
+        const user = firebase.auth.currentUser;
 
-    if (user) {
-        locals.user = {
-            email: user.email ?? '',
-            name: user.displayName ?? '',
-            avatar: user.photoURL ?? '',
-            emailVerified: user.emailVerified
+        locals.isLoggedIn = isLoggedIn;
+        if (user) {
+            locals.user = {
+                avatar: user.photoURL ?? '',
+                email: user.email!,
+                name: user.displayName!,
+                emailVerified: user.emailVerified,
+            };
         }
+
+        console.log({ isLoggedIn, user });
+        if (!isLoggedIn && privateRoutes.includes(url.pathname)) {
+            return redirect('/');
+        }
+
+        if (isLoggedIn && notAuthenticatedRoutes.includes(url.pathname)) {
+            return redirect('/');
+        }
+
+        return next();
     }
-
-    locals.isLoggedIn = isLoggedIn;
-
-    if (!isLoggedIn && privateRoutes.includes(url.pathname)) {
-        return redirect("/");
-    }
-
-    if (isLoggedIn && publicRoutes.includes(url.pathname)) {
-        return redirect("/protected");
-    }
-
-    return next();
-});
+);
