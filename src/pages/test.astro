@@ -125,25 +125,25 @@ const rememberMe = !!email;
     btnGoogle.setAttribute('disabled', 'disabled');
     btnGoogle.innerText = 'Redireccionando...';
 
-    // const provider = new GoogleAuthProvider();
+    const provider = new GoogleAuthProvider();
 
-    // try {
-    //   // Paso 1: Obtener las credenciales del lado del cliente
-    //   const credentials = await signInWithPopup(firebase.auth, provider);
+    try {
+      // Paso 1: Obtener las credenciales del lado del cliente
+      const credentials = await signInWithPopup(firebase.auth, provider);
 
-    //   // Paso 2: Verifcar las credenciales en el backend
-    //   const { error } = await actions.loginWithGoogle(credentials);
+      // Paso 2: Verifcar las credenciales en el backend
+      const { error } = await actions.loginWithGoogle(credentials);
 
-    //   if (error) {
-    //     alert(error.message);
-    //     btnGoogle.removeAttribute('disabled');
-    //     return;
-    //   }
+      if (error) {
+        alert(error.message);
+        btnGoogle.removeAttribute('disabled');
+        return;
+      }
 
-    //   window.location.replace('/protected');
-    // } catch (error) {
-    //   console.log(error);
-    //   btnGoogle.removeAttribute('disabled');
-    // }
+      window.location.replace('/protected');
+    } catch (error) {
+      console.log(error);
+      btnGoogle.removeAttribute('disabled');
+    }
   });
 </script>
