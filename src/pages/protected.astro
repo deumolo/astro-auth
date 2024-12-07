@@ -1,5 +1,4 @@
 ---
-import Navbar from '@/components/Navbar.astro';
 import AuthLayout from '@/layouts/AuthLayout.astro';
 
 const { isLoggedIn, user } = Astro.locals;
@@ -10,7 +9,6 @@ if (!isLoggedIn || !user) {
 
 const { email, avatar, emailVerified, name } = user;
 ---
-<Navbar />
 <AuthLayout isEmptyTheme={true}>
   <divz
     class='bg-gradient-to-b from-blue-500 to-blue-400 opacity-75 font-sans h-screen w-full flex flex-row justify-center items-center'
