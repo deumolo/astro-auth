@@ -1,0 +1,42 @@
+---
+const email = Astro.cookies.get('email')?.value || '';
+const rememberMe = !!email;
+---
+
+<div class='flex justify-center self-center z-10'>
+  <div class='p-12 bg-white mx-auto rounded-2xl w-100'>
+    <form class='space-y-5'>
+      <div>
+        <button
+          type='button'
+          id='btn-google'
+          class='disabled:cursor-default cursor-pointer disabled:bg-gray-300 w-full flex justify-center bg-red-400 text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg transition ease-in duration-500'
+        >
+          Ingresar con Google
+        </button>
+      </div>
+    </form>
+    <div class='pt-5 text-center text-gray-400 text-xs'>
+      <span>
+        Copyright © 2021-2022
+        <a
+          href='https://codepen.io/uidesignhub'
+          rel=''
+          target='_blank'
+          title='Ajimon'
+          class='text-green hover:text-green-500'>AJI</a
+        ></span
+      >
+    </div>
+  </div>
+</div>
+
+<script>
+  const btnGoogle = document.querySelector('#btn-google') as HTMLButtonElement;
+
+  btnGoogle.addEventListener('click', async () => {
+    console.log('Ingresar con Google');
+    // btnGoogle.setAttribute('disabled', 'disabled');
+    // btnGoogle.innerText = 'Redireccionando...';
+  });
+</script>
